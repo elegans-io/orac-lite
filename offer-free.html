@@ -1,0 +1,307 @@
+---
+layout: page
+title: ORAC LT by elegans.io
+permalink: /offer
+---
+    <script> 
+    /*
+      Define client
+    */
+    var client = new Keen({
+      projectId: '59d3895ac9e77c0001096d24',
+      writeKey: '34291211812811472FEB68C77A2161B28BFFEF2C664D8F3F20C7109F84FDEC6C04D58F4EA45C8471C3002978633A7BF2CEFCFFDE5CC3FD802F9769D6367C00FFF70E62D17D945E670EEB83CA5893334DA72A26D89084C01FD4FA468C5145B0F7'
+    });
+    // Log attempts
+    client.on('recordEvent', console.log);
+    Keen.debug = true;
+    Keen.ready(function(){
+      // Set listener to sample engagement on page unload
+      // Define data model for 'page-unload' events here
+      setUnloadListener(function(){
+        return {
+          scroll_info: sampleScrollState()
+        };
+      });
+    });
+
+    /*
+      Define scroll-handler
+    */
+    var winScroll = Keen.utils.listener('window');
+    var pixel = 0, pixel_max = 0;
+    winScroll.on('scroll', sampleScrollState);
+
+    /*
+      Scroll-depth sampling
+    */
+    function sampleScrollState() {
+      pixel = getScrollOffset() + getWindowHeight();
+      if (pixel > pixel_max) {
+        pixel_max = pixel;
+      }
+      return {
+        'pixel': pixel,
+        'pixel_max': pixel_max,
+        'ratio': parseFloat( Number(pixel / getScrollableArea()).toFixed(2) ),
+        'ratio_max': parseFloat( Number(pixel_max / getScrollableArea()).toFixed(2) )
+      }
+    }
+
+    function getWindowHeight() {
+      return window.innerHeight || document.documentElement.clientHeight;
+    }
+
+    function getScrollOffset() {
+      return (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+    }
+
+    function getScrollableArea() {
+      var body = document.body, html = document.documentElement;
+      return Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight ) || null;
+    }
+
+
+    /*
+      Interrupt unload to perform synchronous request
+    */
+    function setUnloadListener(dataModelHandler){
+      console.log('Called: setUnloadListener()')
+      var attachEvent, whichEvent;
+      var handler = function(){
+        handleUnloadEvent(dataModelHandler);
+      };
+      if (window.onpagehide || window.onpagehide === null) {
+        window.addEventListener('pagehide', handler, false);
+      }
+      else {
+        attachEvent = window.attachEvent || window.addEventListener
+        whichEvent = window.attachEvent ? 'onbeforeunload' : 'beforeunload';
+        attachEvent(whichEvent, handler);
+      }
+    }
+
+    function handleUnloadEvent(dataModelHandler){
+      var request = getXHR();
+      var url = client.url('events', 'page-unload');
+      if (request) {
+        url += '?api_key=' + client.writeKey();
+        url += '&data=' + encodeURIComponent(
+          btoa(
+            JSON.stringify(
+              dataModelHandler()
+            )
+          )
+        );
+        request.open('GET', url, false);
+        request.send(null);
+      }
+    }
+
+    function getXHR() {
+      if (window.XMLHttpRequest && ('file:' != window.location.protocol || !window.ActiveXObject)) {
+        return new XMLHttpRequest;
+      } else {
+        try { return new ActiveXObject('Microsoft.XMLHTTP'); } catch(e) {}
+        try { return new ActiveXObject('Msxml2.XMLHTTP.6.0'); } catch(e) {}
+        try { return new ActiveXObject('Msxml2.XMLHTTP.3.0'); } catch(e) {}
+        try { return new ActiveXObject('Msxml2.XMLHTTP'); } catch(e) {}
+      }
+      return false;
+    }
+  </script>
+
+<!-- Slider Start -->
+<section id="slider">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-10 col-md-offset-2">
+        <div class="block">
+          <h1 class="animated fadeInUp">The power of amazon-like </br> recommendations delivered </br>to your customer inbox</h1>
+          <br>
+          <p>
+          Product recommendations have a phenomenal impact to drive conversions on your ecommerce website. Because they are really personal and relevant to every single user. <br><br>Email marketing &mdash;product newsletters&mdash; is another awesome tool to drive conversions.
+          <br><br>But, email marketing does not have the same power as online product recommendations. <br><br>Why? Because most of "personal" recommendations sent by email are based on clusters, or personas; they are not <i>really</i> personal.   That's why we developed ORAC.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Wrapper Start  -->
+<section id="intro">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-7 col-sm-12">
+        <div class="block">
+          <div class="section-title">
+            <h2>Product recommendation and <BR>real personalization<BR>
+            for your email marketing</h2>
+          </div>
+            <p><BR><b>ORAC LT brings the power of amazon-like <br>personalized
+          product recommendations to your email marketing.</b><br><br><b>You
+          will populate your</b> email marketing and <b>newsletters</b> with
+          <br><b>the best recommended products</b>, and most relevant message, <b>to
+          every single user</b>.<br><br>
+          Maximize your user engagement, also on email.</p>
+<!--            <p>Email is still the tool with the highest conversion. In 2016, email generated <a
+      href="https://www.campaignmonitor.com/company/annual-report/2016/" target="_blank">174% more conversion</a> than Facebook and Twitter together. According to a study by The Aberdeen Group, <b>96%</b> of organizations believe that <b>email personalization can improve email marketing performance</b>. And 45% or more marketing professionals anticipate implementing features like dynamic content elements and personalization this year according to an article by eMarketer.
+</p>
+          </div>    
+          <p>But. Managing personalized content can be <b>expensive</b>: you need <b>experts</b> organizing the campaign to the smallest detail &mdash;content, frequency, target&mdash; and then analyzing the results.</p>
+          <p>Small to Medium Enterprises, <b>lacking the economy of scale </b>, must often outsource the whole process, paying <b>a higher cost per performance</b> compared to Big Corporations. <br><br><b>ORAC brings the power of personalized content and product recommendation to companies of all size.</b></p>
+-->
+         </div>
+      </div>
+      <!-- .col-md-7 close -->
+      <div class="col-md-5 col-sm-12">
+        <div class="block">
+          <img src="img/wrapper-img.png" alt="Img">
+        </div>
+      </div><!-- .col-md-5 close -->
+    </div>
+  </div>
+</section>
+
+<section id="feature">
+  <div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-6">
+      <h2>AI-BASED AMAZON-LIKE<br>PRODUCT RECOMMENDATIONS <br>FOR YOUR EMAIL MARKETING</h2>
+      <p>ORAC pinpoints the best product for every single customer. ORAC will give you the most relevant products for every customer, so you can: </p>
+      <p>&#9679;&nbsp;&nbsp;Send by newsletter the best recommended product to every single customer<br>
+        &#9679;&nbsp;&nbsp;Send the most relevant message to every single customer<br>
+      &#9679;&nbsp;&nbsp;Improve relevance of your email marketing activities<br>
+      &#9679;&nbsp;&nbsp;Up to +30% sales<br>
+      &#9679;&nbsp;&nbsp;Up to +10% click-through rate</p>
+      <p>As a SME, you have now the opportunity to leverage on being lean and fast to adapt.</p>
+      <p>With ORAC, you have at your disposal an AI-based marketing
+      manager to work for you.</p>
+      <p>The good news is &mdash;look at the <b><a href="#pricing">pricing</a></b></p>
+      <p>Welcome to the future.</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Service Start -->
+<section id="service">
+  <div class="container">
+    <div class="row">
+      <div class="section-title">
+        <h2>How to use ORAC</h2>
+      </div>
+    </div>
+    <div class="row ">
+      <div class="col-sm-6 col-md-3">
+        <div class="service-item">
+          <i class="icon ion-coffee"></i>
+          <h4>UPLOAD</h4>
+          <p><br>Upload your <b>past sales</b>. And an email
+          template &mdash;otherwise we will suggest one for you.</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <div class="service-item">
+          <i class="ion-leaf"></i>
+          <h4>PROCESS</h4>
+          <p><br>ORAC analyzes each possible action by the user, and
+          <b>predicts preferences</b> &mdash;and not just about products.</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <div class="service-item">
+          <i class="ion-compass"></i>
+          <h4>SEND</h4>
+          <p><br>ORAC will send the emails for you at no cost. Over
+          time, ORAC will continously run A/B tests, <b>learning by
+          the usage</b>.</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <div class="service-item">
+          <i class="ion-planet"></i>
+          <h4>ANALYTICS</h4>
+          <p><br>Sit back and enjoy the results. Within few hours,
+          your <b>click-through-rate</b> will take off.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Call to action Start -->
+<section id="pricing">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="block">
+        <h2>PRICING MODEL - LIMITED OFFER</h2>
+          <p>We feel we can't ask you money for improving your email marketing with AI-based product recommendation. <br>Nor for letting you use some (however beautiful) recommendation algorithms (we enjoy developing them).</p>
+        </div>
+        <h3>3 MONTHS FREE</h3>
+        <p>We believe in what we do. We give you the power of product
+        recommendation and email marketing personalization.
+        <br>Yes - we think that you should really try our system and see the results for yourself. We believe that you will be happy and that you will love ORAC over time. After your free 3 months, your account will be deactivated; from then, you decide. <br> Send us a message with the form below to check if you qualify for the free offer. Please describe your business, and provide an estimate of number of emails sent per month.</b></p><br>
+          <a class="btn btn-default btn-call-to-action" href="#contact-form">CONTACT US</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- contact form start -->
+<section id="contact-form">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-sm-12">
+        <div class="block">
+          <h2>OUR OFFICES</h2>
+          <ul class="address-block">
+            <li>
+              <i class="fa fa-map-marker"></i>Bellside House, 4
+            Elthorne road, London
+            </li>
+            <li>
+              <i class="fa fa-envelope-o"></i>Email:info@elegans.io
+            </li>
+            <li>
+              <i class="fa fa-phone"></i>Phone:+44 7441 909 390, +39 348 0727 052
+            </li>
+          </ul>
+
+          <ul class="social-icons">
+            <li>
+              <a href="https://www.linkedin.com/company/11067645/"><i class="fa fa-linkedin"></i></a>
+            </li>
+            <li>
+              <a href="https://github.com/elegans-io"><i class="fa fa-github"></i></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-12">
+        <div class="block">
+          <form method="POST" action="http://formspree.io/bd@elegans.io">
+            <div class="form-group">
+              <input type="text" name="email" class="form-control" placeholder="Your Email">
+            </div>
+            <div class="form-group-2">
+              <textarea name="message" class="form-control" rows="3" placeholder="Your Message"></textarea>
+            </div>
+            <button class="btn btn-default" type="submit">SEND</button>
+          </form>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!--
+    <div id="contact-box" class="row">
+      <div class="col-md-6 col-sm-12">
+        <div class="block">
+          <h2>On Google Map</h2>
+            <div class="google-map">
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2480.16295271809!2d-0.13395258505028912!3d51.565246179644724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761bafaf312ff7%3A0xc7aee9f0fc7c78d!2sBellside+House%2C+4+Elthorne+Rd%2C+London+N19+4AG%2C+UK!5e0!3m2!1sen!2sit!4v1505311764156" width="555" height="300" frameborder="0" style="border:0"></iframe>
+            </div>
+        </div>
+      </div>
+    </div>
+    -->
+  </div>
+</section>
